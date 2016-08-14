@@ -2,14 +2,23 @@
 
 An application for CRUD handling.
 
+## Adding a Handler ##
+
+    $ rebar3 new crud-handler my_resource
+
+Then add the `my_resource_model` entry to the list of results in `src/router.erl`
+
+The commands in [Testing](#testing) should then pass.
+
+## Testing ##
+
+    $ rebar3 check
+
 ## Building ##
 
     $ rebar3 release
     $ ./_build/default/bin/{{name}}
 
-## Testing ##
-
-    $ rebar3 check
 
 ## Development shell ##
 
@@ -50,6 +59,3 @@ Query Erlang VM information:
 
     $ curl http://localhost:5565/_system
 
-## Developing ##
-
-TODO

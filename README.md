@@ -15,4 +15,4 @@ Add the plugin to your rebar config:
 Then call:
 
     $ rebar3 new crud-project -f
-    $ rebar3 new crud-handler my_resource
+    $ less README.md
