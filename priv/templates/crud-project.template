@@ -1,0 +1,33 @@
+{description, "Set up a project for CRUD HTTP interfaces."}.
+{variables, [
+  {name, "crud", "Name of the project."}
+]}.
+
+{file, "crud.rebar.config", "rebar.config"}.
+{file, "gitignore", ".gitignore"}.
+{file, "README.md", "README.md"}.
+
+{dir, "backends/"}.
+{file, "memstore_proc.erl", "backends/memstore_proc.erl"}.
+%% ignore the following file to transform into a tutorial
+{file, "memstore.erl", "backends/memstore.erl"}.
+
+{dir, "config/"}.
+{file, "sys.config", "config/sys.config"}.
+
+{dir, "handlers/"}.
+%% no crud handler added yet, use the crud-handler template.
+
+{dir, "models/"}.
+%% no crud model added yet, use the crud-handler template.
+
+{dir, "test/"}.
+%% no crud tests added yet, use the crud-handler template.
+
+{dir, "src/"}.
+{template, "crud.app.src", "src/{{name}}.app.src"}.
+{template, "crud_app.erl", "src/{{name}}_app.erl"}.
+{file, "crud_callback.erl", "src/crud_callback.erl"}.
+{template, "crud_sup.erl", "src/{{name}}_sup.erl"}.
+{file, "log_utils.erl", "src/log_utils.erl"}.
+{file, "router.erl", "src/router.erl"}.

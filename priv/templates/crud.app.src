@@ -1,0 +1,22 @@
+{application, {{name}},
+ [{description, "A generic CRUD application"},
+
+  %% Runtime dependencies
+  {applications, [
+    cowboy, jsx, uuid, folsom, lager, cowboy_swagger, trails,
+    stdlib, kernel
+  ]},
+
+  %% Configuration data
+  {env, [
+    {port, 8001},        % HTTP port to listen to
+    {lockdown, false}    % Turn the HTTP handling off entirely
+  ]},
+
+  %% Other OTP metadata
+  {vsn, "0.1.0"},
+  {registered, []},
+  {mod, { {{name}}_app,[]}},
+  {modules, []}
+ ]
+}.
