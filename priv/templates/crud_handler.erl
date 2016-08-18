@@ -2,14 +2,14 @@
 -module({{name}}_handler).
 
 %% Docs callbacks
--export([paths/1]).
+-export([paths/1, paths/2]).
 %% cowboy_rest callbacks
 -export([init/3, rest_init/2, rest_terminate/2, service_available/2,
          allowed_methods/2, resource_exists/2, is_authorized/2,
          content_types_provided/2, to_json/2, delete_resource/2,
          content_types_accepted/2, from_json/2, is_conflict/2]).
 %% Don't warn on known optional callbacks
--ignore_xref([paths/1, init/3, rest_init/2, rest_terminate/2,
+-ignore_xref([paths/1, paths/2, init/3, rest_init/2, rest_terminate/2,
               service_available/2, allowed_methods/2, resource_exists/2,
               is_authorized/2, content_types_provided/2, to_json/2,
               delete_resource/2, content_types_accepted/2, from_json/2,
@@ -24,12 +24,16 @@
 -define(MIMETYPE, {<<"application">>, <<"json">>, '*'}).
 -define(MIMETYPE_DOC, "application/json").
 
-paths(Item) when is_binary(Item) ->
-    paths(unicode:characters_to_list(Item));
-paths(Item) when is_atom(Item) ->
-    paths(atom_to_list(Item));
-paths(Item) when is_list(Item) ->
+paths(Item) ->
+    paths(Item, default_spec(Item)).
+
+paths(Item, Spec) when is_binary(Item) ->
+    paths(unicode:characters_to_list(Item), Spec);
+paths(Item, Spec) when is_atom(Item) ->
+    paths(atom_to_list(Item), Spec);
+paths(Item, Spec) when is_list(Item) ->
     #{post => #{
+        parameters => [Spec],
         tags => [Item],
         summary => "Creates an object of type "++Item++".",
         description => "Creates an object of type "++Item++".",
@@ -56,6 +60,7 @@ paths(Item) when is_list(Item) ->
         }
       },
       put => #{
+        parameters => [Spec],
         tags => [Item],
         summary => "Updates an existing object of type "++Item++".",
         description => "Updates an existing object of type "++Item++".",
@@ -80,6 +85,19 @@ paths(Item) when is_list(Item) ->
         }
       }
      }.
+
+default_spec(Item) ->
+    %% See http://swagger.io/specification/#schemaObject
+    #{name => Item,
+      in => body,
+      description => "Object of type "++Item++".",
+      required => true,
+      schema => #{
+        type => "object",
+        properties => #{
+          spec => #{type => "string"}
+         }
+       }}.
 
 %% @private called when starting the handling of a request
 init(_Transport, Req, [Model]) ->
@@ -190,6 +208,12 @@ from_json(Req, State=#state{resource_id=Id, resource=R, model=M, model_state=S})
 %% for the location header.
 maybe_expand({true, Id}, Req) ->
     {Path, Req2} = cowboy_req:path(Req),
-    { {true, [Path, Id]}, Req2};
+    { {true, [Path, trail_slash(Path), Id]}, Req2};
 maybe_expand(Val, Req) ->
     {Val, Req}.
+
+trail_slash(Path) ->
+    case binary:last(Path) of
+        $/ -> "";
+        _ -> "/"
+    end.

@@ -17,7 +17,7 @@ The commands in [Testing](#testing) should then pass.
 ## Building ##
 
     $ rebar3 release
-    $ ./_build/default/bin/{{name}}
+    $ ./_build/default/rel/{{name}}/bin/{{name}}
 
 
 ## Development shell ##
