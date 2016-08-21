@@ -15,7 +15,7 @@ update(K,V,[]) -> [{K,V}];
 update(K,V,[{K,_}|T]) -> [{K,V}|T];
 update(K,V,[H|T]) -> [H|update(K,V,T)].
 
-delete(_, []) -> true;
+delete(_, []) -> [];
 delete(K, [{K,_}|T]) -> T;
 delete(K, [H|T]) -> [H|delete(K, T)].
 
