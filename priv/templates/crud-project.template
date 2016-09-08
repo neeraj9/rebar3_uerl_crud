@@ -5,7 +5,7 @@
 
 {file, "crud.rebar.config", "rebar.config"}.
 {file, "gitignore", ".gitignore"}.
-{file, "Makefile.ukernel", "Makefile.ukernel"}.
+{template, "Makefile.ukernel", "Makefile.ukernel"}.
 {file, "Makefile.rumprun", "Makefile.rumprun"}.
 {file, "setenv.sh", "setenv.sh"}.
 {file, "erl.sample", "erl"}.
