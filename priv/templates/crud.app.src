@@ -9,7 +9,7 @@
 
   %% Configuration data
   {env, [
-    {port, 8001},        % HTTP port to listen to
+    {port, 80},          % HTTP port to listen to
     {lockdown, false}    % Turn the HTTP handling off entirely
   ]},
 
