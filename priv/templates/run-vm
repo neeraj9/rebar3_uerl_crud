@@ -84,6 +84,8 @@ main() {
      -i build/rumprun-packages/erlang/beam.hw.bin \
        "-K true \
         -- $epmd_opt -root $erlpath/lib/erlang \
+        -boot $erlpath/lib/erlang/releases/latest/start \
+        -config $erlpath/lib/erlang/releases/latest/sys.config \
         -progname erl -- \
         -home $erlhome -noshell -noinput \
         -mode embedded \

@@ -46,9 +46,8 @@ PKGVSN=0.1.0
 	 tar -xzf ../../../_build/prod/rel/{{name}}/{{name}}-$(PKGVSN).tar.gz)
 	# copy the start.boot from application to its default location
 	# where the beam vm expects it.
-	(cd _deployed-{{name}}-$(PKGVSN)/lib/erlang/bin; \
-	 rm -f start.boot; \
-	 ln -s ../releases/$(PKGVSN)/start.boot start.boot)
+	(cd _deployed-{{name}}-$(PKGVSN)/lib/erlang/releases; \
+	 ln -s $(PKGVSN) latest)
 	# copy meta information for base erlang config
 	cp $(ERLANG_BASE_META_PATH)/build/erlangdist/opt/erlang/erl_inetrc _deployed-{{name}}-$(PKGVSN)/
 	cp $(ERLANG_BASE_META_PATH)/build/erlangdist/opt/erlang/hosts _deployed-{{name}}-$(PKGVSN)/hosts
