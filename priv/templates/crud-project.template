@@ -9,6 +9,7 @@
 {file, "Makefile.rumprun", "Makefile.rumprun"}.
 {file, "setenv.sh", "setenv.sh"}.
 {file, "erl.sample", "erl"}.
+{file, "run-vm", "run-vm"}.
 {template, "README.md", "README.md"}.
 
 {dir, "backends/"}.
