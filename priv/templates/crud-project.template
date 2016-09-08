@@ -5,6 +5,9 @@
 
 {file, "crud.rebar.config", "rebar.config"}.
 {file, "gitignore", ".gitignore"}.
+{file, "Makefile.rumprun", "Makefile.rumprun"}.
+{file, "setenv.sh", "setenv.sh"}.
+{file, "erl.sample", "erl"}.
 {template, "README.md", "README.md"}.
 
 {dir, "backends/"}.

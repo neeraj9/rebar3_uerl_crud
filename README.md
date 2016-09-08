@@ -1,7 +1,7 @@
-rebar3_crud
+rebar3_uerl_crud
 =====
 
-CRUD templates plugin
+Erlang Microkernel CRUD templates plugin
 
 Use
 ---
@@ -9,7 +9,7 @@ Use
 Add the plugin to your rebar config:
 
     {plugins, [
-        {rebar3_crud, {git, "https://bitbucket.org/ferd/rebar3_crud.git", {branch, "master"}}}
+        {rebar3_crud, {git, "https://github.com/neeraj9/rebar3_uerl_crud.git", {branch, "master"}}}
     ]}.
 
 Then call:
