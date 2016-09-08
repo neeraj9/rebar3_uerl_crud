@@ -10,7 +10,7 @@
 {file, "setenv.sh", "setenv.sh"}.
 {file, "erl.sample", "erl"}.
 {file, "run-vm", "run-vm"}.
-{template, "README.md", "README.md"}.
+{template, "README.md", "CRUD_README.md"}.
 
 {dir, "backends/"}.
 {file, "memstore_proc.erl", "backends/memstore_proc.erl"}.
