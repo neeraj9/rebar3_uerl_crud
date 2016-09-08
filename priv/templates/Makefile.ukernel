@@ -1,0 +1,59 @@
+# Copyright (c) 2016, Neeraj Sharma <neeraj.sharma@alumni.iitg.ernet.in>.
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are
+# met:
+#
+# * Redistributions of source code must retain the above copyright
+#   notice, this list of conditions and the following disclaimer.
+#
+# * Redistributions in binary form must reproduce the above copyright
+#   notice, this list of conditions and the following disclaimer in the
+#   documentation and/or other materials provided with the distribution.
+#
+# * The names of its contributors may not be used to endorse or promote
+#   products derived from this software without specific prior written
+#   permission.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+# "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+# LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+# A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+# OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+# SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+# LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+# DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+# THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+# OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+# must be the first thing to do
+# Makefile.rumprun provides: .rumprun_packages_built
+include Makefile.rumprun
+
+ifeq ($(shell uname),Darwin)
+RUMPRUN_GENISOIMAGE=hdiutil makehybrid -iso
+else
+RUMPRUN_GENISOIMAGE=genisoimage -l -r
+endif
+
+PKGVSN=0.1.0
+
+{{name}}-$(PKGVSN).iso: .rumprun_packages_built _build/prod/rel/{{name}}/{{name}}-$(PKGVSN).tar.gz
+	mkdir -p _deployed-{{name}}-$(PKGVSN)/lib/erlang
+	(cd _deployed-{{name}}-$(PKGVSN)/lib/erlang; \
+	 tar -xzf ../../../_build/prod/rel/{{name}}/{{name}}-$(PKGVSN).tar.gz)
+	# copy the start.boot from application to its default location
+	# where the beam vm expects it.
+	(cd _deployed-{{name}}-$(PKGVSN)/lib/erlang/bin; \
+	 rm -f start.boot; \
+	 ln -s ../releases/$(PKGVSN)/start.boot start.boot)
+	# copy meta information for base erlang config
+	cp $(ERLANG_BASE_META_PATH)/build/erlangdist/opt/erlang/erl_inetrc _deployed-{{name}}-$(PKGVSN)/
+	cp $(ERLANG_BASE_META_PATH)/build/erlangdist/opt/erlang/hosts _deployed-{{name}}-$(PKGVSN)/hosts
+	cp $(ERLANG_BASE_META_PATH)/build/erlangdist/opt/erlang/resolv.conf _deployed-{{name}}-$(PKGVSN)/resolv.conf
+	# setnodename is required for clustering
+	mkdir -p _deployed-{{name}}-$(PKGVSN)/lib/erlang/lib/setnodename-0.0.1/ebin
+	cp build/rumprun-packages/erlang/examples/setnodename/*.beam _deployed-{{name}}-$(PKGVSN)/lib/erlang/lib/setnodename-0.0.1/ebin
+	$(RUMPRUN_GENISOIMAGE) -o {{name}}-$(PKGVSN).iso _deployed-{{name}}-$(PKGVSN)/
