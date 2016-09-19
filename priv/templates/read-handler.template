@@ -1,0 +1,16 @@
+{description, "Set up a project for Read API HTTP interfaces."}.
+{variables, [
+  {name, "readapi", "Name of the resource"},
+  {appname, "crud", "Name of the parent app."}
+]}.
+
+{dir, "handlers/"}.
+{template, "read_handler.erl", "handlers/{{name}}_handler.erl"}.
+
+{dir, "models/"}.
+{template, "read_model.erl", "models/{{name}}_model.erl"}.
+
+{dir, "test/"}.
+{file, "crudcli.erl", "test/crudcli.erl"}.
+{template, "model_read.erl", "test/model_{{name}}.erl"}.
+{template, "prop_crud.erl", "test/prop_{{name}}.erl"}.
