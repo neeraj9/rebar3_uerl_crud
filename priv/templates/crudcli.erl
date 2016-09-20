@@ -9,7 +9,7 @@
 -define(MIME, "application/json").
 
 create(Host, Path, Map) ->
-    handle_res(httpc:request(post, {Host++Path, [], ?MIME, jsx:encode(Map)},
+    handle_res(httpc:request(post, {Host++Path, [], ?MIME, jiffy:encode(Map)},
                              [], [{body_format, binary}])).
 
 %% alias for nicer reporting
@@ -28,7 +28,7 @@ read_exists(Host, Path) -> read(Host, Path).
 read_unknown(Host, Path) -> read(Host, Path).
 
 update(Host, Path, Map) ->
-    handle_res(httpc:request(put, {Host++Path, [], ?MIME, jsx:encode(Map)},
+    handle_res(httpc:request(put, {Host++Path, [], ?MIME, jiffy:encode(Map)},
                              [], [{body_format, binary}])).
 
 %% alias for nicer reporting
@@ -49,7 +49,7 @@ handle_res({ok, {{_HTTP, Code, _Status}, Headers, <<>>}}) ->
     {Code, Headers, undefined};
 handle_res({ok, {{_HTTP, Code, _Status}, Headers, Body}}) ->
     DecodedBody = try
-                      jsx:decode(Body, [return_maps])
+                      jiffy:decode(Body, [return_maps])
                   catch
                       _:_ ->
                           io:format("Body: ~p~n", [Body]),

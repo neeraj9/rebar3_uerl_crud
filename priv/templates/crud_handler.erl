@@ -153,7 +153,7 @@ content_types_provided(Req, State) ->
 
 %% @private
 to_json(Req, State=#state{resource=Resource}) when is_map(Resource) ->
-    {jsx:encode(Resource), Req, State}.
+    {jiffy:encode(Resource), Req, State}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%
 %%% DELETE Callbacks %%%
@@ -186,7 +186,7 @@ from_json(Req, State=#state{resource_id=Id, resource=R, model=M, model_state=S})
             {false, Req2, State};
         _ ->
             try
-                Map = jsx:decode(Body, [return_maps]),
+                Map = jiffy:decode(Body, [return_maps]),
                 case {Method, M:validate(Map, S)} of
                     {<<"POST">>, {true, S2}} ->
                         {Res, S3} = M:create(Id, Map, S2),
