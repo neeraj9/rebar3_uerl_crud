@@ -3,7 +3,7 @@
 
   %% Runtime dependencies
   {applications, [
-    cowboy, jsx, uuid, folsom, lager, cowboy_swagger, trails,
+    cowboy, jiffy, uuid, folsom, lager, cowboy_swagger, trails,
     stdlib, kernel
   ]},
 
