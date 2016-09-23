@@ -6,7 +6,6 @@
 %% cowboy_rest callbacks
 -export([init/3, rest_init/2, rest_terminate/2, service_available/2,
          allowed_methods/2, is_authorized/2,
-         content_types_provided/2, to_json/2, delete_resource/2,
          content_types_accepted/2, from_json/2]).
 %% Don't warn on known optional callbacks
 -ignore_xref([paths/1, paths/2, init/3, rest_init/2, rest_terminate/2,
@@ -68,7 +67,7 @@ init(_Transport, Req, [Model]) ->
 
 %% @private Put the rest model in place
 rest_init(Req, State) ->
-    Req2 = cowboy_req:set_meta(log_enabled, true, Req1),
+    Req2 = cowboy_req:set_meta(log_enabled, true, Req),
     Req3 = cowboy_req:set_meta(start_time, State#state.start, Req2),
     Req4 = cowboy_req:set_meta(metrics_source, State#state.model, Req3),
     {ok, Req4, State}.
@@ -84,7 +83,7 @@ service_available(Req, State) ->
 
 %% @private Allow CRUD stuff standard
 allowed_methods(Req, State) ->
-    {[<<"POST">>,<<"PUT">>], Req, State}.
+    {[<<"POST">>], Req, State}.
 
 %% @private No authorization in place for this demo, but this is it where it goes
 is_authorized(Req, State) ->
@@ -105,21 +104,21 @@ from_json(Req, State=#state{resource=R, model=M, model_state=S}) ->
         <<"POST">> ->
             try
                 Map = jiffy:decode(Body, [return_maps]),
-		% TODO do something with the body
-		% TODO maybe the model state changes due to some operation
-		S3 = S,
-		% case1: created resource but new Id and no body
-                {true, Req2, State#state{model_state=S3}};
-		% case2: Id created as part of POST
+		            % TODO do something with the body
+		            % TODO maybe the model state changes due to some operation
+		            S3 = S,
+                % case1: created resource but new Id and no body
+                {true, Req2, State#state{model_state=S3}}
+		            % case2: Id created as part of POST
                 %  {Path, Req2} = cowboy_req:path(Req),
-                %  { {true, [Path, trail_slash(Path), Id]}, Req2, State};
-		% case3: Id updated as part of PUT
-		%  {Id, Req2, State};
+                %  { {true, [Path, trail_slash(Path), Id]}, Req2, State}
+		            % case3: Id updated as part of PUT
+		            %  {Id, Req2, State}
             catch
                 error:badarg ->
                     {false, Req2, State}
             end;
-        _ -> {false, Req2, State#state{model_state=S2}}
+        _ -> {false, Req2, State#state{model_state=S}}
     end.
 
 maybe_expand(Val, Req) ->

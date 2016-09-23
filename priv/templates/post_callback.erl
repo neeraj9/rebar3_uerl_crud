@@ -5,7 +5,7 @@
 %%%
 %%% Specify the `-behaviour(post_callback).' module attribute
 %%% and the rest can then be implemented.
--module(crud_callback).
+-module(post_callback).
 -ignore_xref([behaviour_info/1]).
 -type state() :: term().
 
