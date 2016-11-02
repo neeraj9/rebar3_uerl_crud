@@ -1,6 +1,6 @@
 -module({{name}}_model).
 -behaviour(trails_handler).
--behaviour({{read}}_callback).
+-behaviour(read_callback).
 -export([trails/0]). % define the API for docs
 -export([init/0, terminate/1
          ]).
