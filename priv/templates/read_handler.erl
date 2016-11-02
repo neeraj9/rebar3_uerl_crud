@@ -104,7 +104,7 @@ to_json(Req, State) ->
     T3 = <<"\"}">>,
     Date = list_to_binary(httpd_util:rfc1123_date()),
 
-    {{IP, _Port}, Req2} = cowboy_req:peer(Req),
+    { {IP, _Port}, Req2} = cowboy_req:peer(Req),
     % do we really need to resolve to hostname?
     Hostname = resolv_hostname_from_ip(IP),
 
@@ -119,7 +119,7 @@ to_html(Req, State) ->
   T3 = <<"</body></html>">>,
   Date = list_to_binary(httpd_util:rfc1123_date()),
 
-  {{IP, _Port}, Req2} = cowboy_req:peer(Req),
+  { {IP, _Port}, Req2} = cowboy_req:peer(Req),
   % do we really need to resolve to hostname?
   Hostname = resolv_hostname_from_ip(IP),
 
