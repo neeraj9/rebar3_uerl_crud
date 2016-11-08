@@ -5,7 +5,7 @@
 -export([paths/1, paths/2]).
 %% cowboy_rest callbacks
 -export([init/3, rest_init/2, rest_terminate/2, service_available/2,
-         allowed_methods/2, is_authorized/2,
+         allowed_methods/2, is_authorized/2, content_types_provided/2, to_json/2,
          content_types_accepted/2, from_json/2]).
 %% Don't warn on known optional callbacks
 -ignore_xref([paths/1, paths/2, init/3, rest_init/2, rest_terminate/2,
@@ -88,6 +88,19 @@ allowed_methods(Req, State) ->
 %% @private No authorization in place for this demo, but this is it where it goes
 is_authorized(Req, State) ->
     {true, Req, State}.
+
+%% The content_types_provided/2 is required because otherwise
+%% simple POST do not work otherwise.
+%% Look at https://ninenines.eu/docs/en/cowboy/1.0/guide/rest_flowcharts/
+%% and you will notice that content_types_provided/2 is always
+%% called irrespective of HTTP method.
+%% @private
+content_types_provided(Req, State) ->
+    {[{?MIMETYPE, to_json}], Req, State}.
+
+to_json(Req, State) ->
+    {<<"">>, Req, State}.
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% PUT/POST Callbacks %%%
